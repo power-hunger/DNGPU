@@ -29,13 +29,15 @@ import matplotlib.image as mpimg
 import numpy as np
 import time
 
+from sklearn.tree.tests.test_export import w
+
 from DNGPU_model import DNGPU
 import random
 import data_utils_2 as data_gen
 
 # common settings
 dropout_keep_prob = 0.9
-training_iters = 200 #steps
+training_iters = 2000 #steps
 display_step = 200
 max_test_length = 5000
 batchSize = 32
@@ -252,6 +254,9 @@ while test_length<max_test_length:
                 total+=tot
 
             acc_real = 1.0-float(errors)/total
+            file = open("errorlist.txt", "a")
+            file.write(seq_errors)
+            file.close()
             print("Testing length:", test_length, "accuracy=", acc_real, "errors =", errors, "incorrect sequences=",seq_errors)
     test_length=test_length*4//3
 
