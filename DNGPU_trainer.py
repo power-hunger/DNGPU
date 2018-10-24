@@ -36,7 +36,7 @@ import data_utils_2 as data_gen
 
 # common settings
 dropout_keep_prob = 0.9
-training_iters = 2000 #steps
+training_iters = 250 #steps
 display_step = 200
 max_test_length = 5000
 batchSize = 32
