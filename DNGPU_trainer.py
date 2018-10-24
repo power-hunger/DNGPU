@@ -248,13 +248,16 @@ while test_length<max_test_length:
                 batch_xs, batch_ys = genTestData(test_length, batchSize)
                 acc1, test_result=tester.getAccuracy(sess, batch_xs, batch_ys)
                 er, tot,seq_er=  data_gen.accuracy(batch_xs[0], test_result, batch_ys[0], batchSize, 0)
+                file = open("errorlisttemp.txt", "a")
+                file.write(str(er))
+                file.close()
                 errors+=er
                 seq_errors+=seq_er
                 total+=tot
 
             acc_real = 1.0-float(errors)/total
             file = open("errorlist.txt", "a")
-            file.write(seq_errors)
+            file.write(str(seq_errors))
             file.close()
             print("Testing length:", test_length, "accuracy=", acc_real, "errors =", errors, "incorrect sequences=",seq_errors)
     test_length=test_length*4//3
