@@ -45,7 +45,7 @@ data_size = 10000
 data_gen.bins = [8, 12, 16, 20, 25, 28, 31, 36, 41]
 
 with open(str('stats.csv'), 'a+', newline='') as csvfile:
-    fieldnames = ['input', 'output', 'target', 'batch_size', 'nprint', 'errors', 'total', 'sum_seq_er']
+    fieldnames = ['input', 'output', 'target', 'nprint', 'errors', 'total', 'sum_seq_er']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
 
@@ -260,7 +260,6 @@ while test_length<max_test_length:
                     writer.writerow({'input': str(batch_xs[0]),
                                      'output': str(test_result),
                                      'target': str(batch_ys[0]),
-                                     'batch_size': str(int(batchSize[0])),
                                      'nprint': str(0),
                                      'errors': str(er),
                                      'total': str(tot),
