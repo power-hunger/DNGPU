@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 """Improving the Neural GPU Architecture for Algorithm Learning"""
-
+import csv
 import os
 
 import tensorflow as tf
@@ -36,13 +36,18 @@ import data_utils_2 as data_gen
 
 # common settings
 dropout_keep_prob = 0.9
-training_iters = 250 #steps
+training_iters = 200 #steps
 display_step = 200
 max_test_length = 5000
 batchSize = 32
 test_data_size = 1024
 data_size = 10000
 data_gen.bins = [8, 12, 16, 20, 25, 28, 31, 36, 41]
+
+with open(str('stats.csv'), 'a+', newline='') as csvfile:
+    fieldnames = ['input', 'output', 'target', 'batch_size', 'nprint', 'errors', 'total', 'sum_seq_er']
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    writer.writeheader()
 
 
 # suggested settings for binary multiplication
@@ -246,19 +251,25 @@ while test_length<max_test_length:
             errors, seq_errors,total = 0, 0, 0
             for iter in range(test_examples//batchSize):
                 batch_xs, batch_ys = genTestData(test_length, batchSize)
-                acc1, test_result=tester.getAccuracy(sess, batch_xs, batch_ys)
-                er, tot,seq_er=  data_gen.accuracy(batch_xs[0], test_result, batch_ys[0], batchSize, 0)
-                file = open("errorlisttemp.txt", "a")
-                file.write(str(er))
-                file.close()
+                acc1, test_result = tester.getAccuracy(sess, batch_xs, batch_ys)
+                er, tot, seq_er = data_gen.accuracy(batch_xs[0], test_result, batch_ys[0], batchSize, 0)
+                with open(str('stats.csv'), 'a+', newline='') as csvfile:
+                    fieldnames = ['Percentage', 'Note_P', 'Note_S', 'Path']
+                    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+                    writer.writerow({'input': str(batch_xs[0]),
+                                     'output': str(test_result),
+                                     'target': str(batch_ys[0]),
+                                     'batch_size': str(batchSize[0]),
+                                     'nprint': str(0),
+                                     'errors': str(er),
+                                     'total': str(tot),
+                                     'sum_seq_er': str(seq_er)})
                 errors+=er
                 seq_errors+=seq_er
                 total+=tot
 
             acc_real = 1.0-float(errors)/total
-            file = open("errorlist.txt", "a")
-            file.write(str(seq_errors))
-            file.close()
             print("Testing length:", test_length, "accuracy=", acc_real, "errors =", errors, "incorrect sequences=",seq_errors)
     test_length=test_length*4//3
 
