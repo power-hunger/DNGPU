@@ -36,7 +36,7 @@ import data_utils_2 as data_gen
 
 # common settings
 dropout_keep_prob = 0.9
-training_iters = 200 #steps
+training_iters = 50 #steps
 display_step = 200
 max_test_length = 5000
 batchSize = 32
@@ -45,7 +45,7 @@ data_size = 10000
 data_gen.bins = [8, 12, 16, 20, 25, 28, 31, 36, 41]
 
 with open(str('stats.csv'), 'a+', newline='') as csvfile:
-    fieldnames = ['input', 'output', 'target', 'nprint', 'errors', 'total', 'sum_seq_er']
+    fieldnames = ['input', 'output', 'target', 'nprint', 'errors', 'total', 'sum_seq_er',]
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
 
@@ -254,7 +254,7 @@ while test_length<max_test_length:
                 acc1, test_result = tester.getAccuracy(sess, batch_xs, batch_ys)
                 er, tot, seq_er = data_gen.accuracy(batch_xs[0], test_result, batch_ys[0], batchSize, 0)
                 with open(str('stats.csv'), 'a+', newline='') as csvfile:
-                    fieldnames = ['Percentage', 'Note_P', 'Note_S', 'Path']
+                    fieldnames = ['input', 'output', 'target', 'nprint', 'errors', 'total', 'sum_seq_er']
                     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
                     writer.writerow({'input': str(batch_xs[0]),
