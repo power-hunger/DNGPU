@@ -260,7 +260,7 @@ while test_length<max_test_length:
                     writer.writerow({'input': str(batch_xs[0]),
                                      'output': str(test_result),
                                      'target': str(batch_ys[0]),
-                                     'batch_size': str(batchSize[0]),
+                                     'batch_size': str(int(batchSize[0])),
                                      'nprint': str(0),
                                      'errors': str(er),
                                      'total': str(tot),
