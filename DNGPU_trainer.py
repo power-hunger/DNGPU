@@ -44,8 +44,13 @@ test_data_size = 1024
 data_size = 10000
 data_gen.bins = [8, 12, 16, 20, 25, 28, 31, 36, 41]
 
-with open(str('stats.csv'), 'a+', newline='') as csvfile:
+with open(str('accuracy_stats.csv'), 'a+', newline='') as csvfile:
     fieldnames = ['input', 'output', 'target', 'nprint', 'errors', 'total', 'sum_seq_er',]
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    writer.writeheader()
+
+with open(str('get_accuracy_stats.csv'), 'a+', newline='') as csvfile:
+    fieldnames = ['sess', 'batch_xs', 'batch_ys', 'acc', 'test_result']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
 
@@ -251,12 +256,21 @@ while test_length<max_test_length:
             errors, seq_errors,total = 0, 0, 0
             for iter in range(test_examples//batchSize):
                 batch_xs, batch_ys = genTestData(test_length, batchSize)
+
                 acc1, test_result = tester.getAccuracy(sess, batch_xs, batch_ys)
+                with open(str('accuracy_stats.csv'), 'a+', newline='') as csvfile:
+                    fieldnames = ['sess', 'batch_xs', 'batch_ys', 'acc', 'test_result']
+                    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                    writer.writerow({'sess': str(sess),
+                                     'batch_xs': str(batch_xs),
+                                     'batch_ys': str(batch_ys),
+                                     'acc': str(acc1),
+                                     'test_result': str(test_result)})
+
                 er, tot, seq_er = data_gen.accuracy(batch_xs[0], test_result, batch_ys[0], batchSize, 0)
-                with open(str('stats.csv'), 'a+', newline='') as csvfile:
+                with open(str('accuracy_stats.csv'), 'a+', newline='') as csvfile:
                     fieldnames = ['input', 'output', 'target', 'nprint', 'errors', 'total', 'sum_seq_er']
                     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-
                     writer.writerow({'input': str(batch_xs[0]),
                                      'output': str(test_result),
                                      'target': str(batch_ys[0]),
