@@ -267,7 +267,7 @@ while test_length<max_test_length:
                                      'acc': str(acc1),
                                      'test_result': str(test_result)})
 
-                er, tot, seq_er = data_gen.accuracy(batch_xs[0], test_result, batch_ys[0], batchSize, 1000000)
+                er, tot, seq_er = data_gen.accuracy(batch_xs[0], test_result, batch_ys[0], batchSize, batchSize)
                 with open(str('accuracy_stats.csv'), 'a+', newline='') as csvfile:
                     fieldnames = ['input', 'output', 'target', 'nprint', 'errors', 'total', 'sum_seq_er']
                     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
