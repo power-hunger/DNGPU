@@ -156,6 +156,7 @@ class DNGPU:
         allMem_tensor = tf.stack(allMem)
         prediction = self.conv_linear(cur, 1, self.num_units, self.n_classes, 0.0, "output")
         costVector = tf.nn.sparse_softmax_cross_entropy_with_logits(logits = prediction, labels = y_in)  # Softmax loss
+        print(costVector)
 
         result = tf.argmax(prediction, 2)
         correct_pred = tf.equal(result, y_in)
